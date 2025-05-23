@@ -15,8 +15,8 @@ class clDotEnv {
      * @param string $path Caminho para o arquivo .env
      */
     public function __construct($path) {
-        if (!file_exists($path)) {
-            throw new InvalidArgumentException(sprintf('%s não encontrado', $path));
+        if (!file_exists($path) || !is_readable($path)) {
+            throw new InvalidArgumentException(sprintf('%s não encontrado ou não pode ser lido.', $path));
         }
 
         $this->path = $path;

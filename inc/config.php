@@ -1,10 +1,11 @@
 <?php
 // Inclui a classe clDotEnv responsável por carregar as variáveis de ambiente do arquivo .env
-require_once __DIR__ . '/../app/classes/clDotEnv.php';
-require_once __DIR__ . '/../app/helpers/functions.php';
+require_once __DIR__ . '/clDotEnv.php';
+// Inclui a classe clDotEnv responsável por carregar as variáveis de ambiente do arquivo .env
+require_once __DIR__ . '/../helpers/functions.php';
 
 // Carrega as variáveis de ambiente do arquivo .env
-$dotenv = new DotEnv\DotEnv(__DIR__ . '/../.env');
+$dotenv = new clDotEnv(__DIR__ . '/.env');
 $dotenv->load();
 
 // Define as variáveis de conexão com o banco usando o conteúdo do .env
