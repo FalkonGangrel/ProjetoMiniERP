@@ -1,13 +1,13 @@
 <?php
-// Inclui o carregador de variáveis de ambiente
-require_once __DIR__ . '/clDotEnv.php';
-// Inclui a classe clDB com PDO
-require_once __DIR__ . '/clDB.php';
+
+use App\Core\clDotEnv;
+use App\Core\clDB;
+
 // Inclui funções auxiliares
 require_once __DIR__ . '/../helpers/functions.php';
 
 // Carrega o .env
-$dotenv = new clDotEnv(__DIR__ . '/.env');
+$dotenv = new clDotEnv(__DIR__ . '/../.env');
 $dotenv->load();
 
 // Define variáveis com base no .env

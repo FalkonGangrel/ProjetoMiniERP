@@ -1,8 +1,15 @@
 <?php
+namespace App\Core;
+
 /**
  * Classe personalizada para conexão com banco de dados usando PDO
  * Possui funcionalidades extras como log de erros, contagem de queries, e prepared statements
  */
+
+use PDO;
+use PDOException;
+use PDOStatement;
+
 class clDB
 {
     private PDO $pdo;
@@ -33,6 +40,10 @@ class clDB
     {
         try {
             $this->stmt = $this->pdo->prepare($sql);
+            if ($this->stmt === false) {
+                $this->error("Erro ao preparar a query: {$sql}");
+                return false;
+            }
             $success = $this->stmt->execute($params);
             $this->queryCount++;
             return $success;
@@ -49,7 +60,7 @@ class clDB
 
     public function fetchArray(): array
     {
-        return $this->stmt ? $this->stmt->fetch() ?: [] : [];
+        return $this->stmt ? ($this->stmt->fetch() ?: []) : [];
     }
 
     public function numRows(): int
