@@ -22,16 +22,12 @@ Um sistema de gestão empresarial (Mini ERP) simples desenvolvido em **PHP** com
 
 ```
 ProjetoMiniERP/
-├── assets/               # Arquivos estáticos (css, js, imagens)
-├── controllers/          # Controladores (lógica da aplicação)
-├── helpers/              # Funções auxiliares
-├── inc/                  # Configuração (clDB, .env, funções)
-├── models/               # Modelos (interação com o banco de dados)
-├── public/               # Pasta pública para index.php (ponto de entrada)
-├── routes/               # Rotas (ex: pedidos.php, produtos.php)
-├── sistema/              # Página principal do sistema (dashboard)
-├── view/                 # Views (páginas HTML)
+├── app/                  # Estrutura principal (Controllers, Models, Views, Core)
+├── config/               # Configurações gerais (como config.php)
+├── public/               # Pasta pública (index.php, .htaccess)
+├── routes/               # Arquivo de rotas do sistema (web.php)
 ├── .env                  # Arquivo de variáveis de ambiente
+├── composer.json         # Autoload e dependências (futuro)
 ├── sql_base.sql          # Script de criação do banco de dados
 └── README.md             # Este arquivo
 ```
@@ -64,12 +60,39 @@ DB_PASS=sua_senha
 DB_NAME=db_mini_erp
 ```
 
-4. **Rodar o sistema:**
+4. **Configurar o Apache para rodar na porta 8090:**
 
-Acesse a pasta `public/` no navegador (configurado como raiz pública no Apache/Nginx) ou via servidor local:
+Abra o arquivo de configuração do Apache (`httpd.conf` ou `httpd-vhosts.conf`) e adicione:
+
+```apache
+Listen 8090
+
+<VirtualHost *:8090>
+    DocumentRoot "E:/Trabalhos/Projetos/ProjetoMiniERP/public"
+    <Directory "E:/Trabalhos/Projetos/ProjetoMiniERP/public">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+
+> ⚠️ Use **barra normal `/`** mesmo no Windows e certifique-se que o módulo `mod_rewrite` está habilitado no Apache.
+
+Reinicie o Apache após a alteração.
+
+5. **Rodar o sistema:**
+
+Acesse no navegador:
 
 ```
-http://localhost/ProjetoMiniERP/public/
+http://localhost:8090/
+```
+
+ou diretamente para alguma rota registrada, como:
+
+```
+http://localhost:8090/produtos
 ```
 
 ## 🧾 Tabelas Incluídas
@@ -99,5 +122,5 @@ Este projeto está em desenvolvimento contínuo. Sugestões, melhorias e contrib
 
 ---
 
-**Autor:** Anderson Dias Takeno  
+**Autor:** Anderson Dias Takeno
 **Licença:** MIT
