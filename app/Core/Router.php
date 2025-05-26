@@ -6,7 +6,7 @@ class Router
 {
     public static function dispatch($uri)
     {
-        $routesPath = __DIR__ . '/../routes/web.php';
+        $routesPath = __DIR__ . '/../../routes/web.php';
 
         if (!file_exists($routesPath)) {
             http_response_code(500);
