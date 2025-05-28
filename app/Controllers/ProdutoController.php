@@ -8,10 +8,13 @@ class ProdutoController
     {
         // Simulação de dados
         $produtos = [
-            ['id' => 1, 'nome' => 'Produto A'],
-            ['id' => 2, 'nome' => 'Produto B'],
+            ['id' => 1, 'nome' => 'Produto A', 'preco' => 10.99],
+            ['id' => 2, 'nome' => 'Produto B', 'preco' => 20.49],
         ];
 
-        view('produtos.lista', compact('produtos'));
+        view('produtos/lista', [
+            'title' => 'Lista de Produtos',
+            'produtos' => $produtos
+        ]);
     }
 }
