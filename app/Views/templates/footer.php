@@ -1,4 +1,4 @@
-    </div> <!-- Fecha container -->
+</main> <!-- Fecha container -->
     <footer class="bg-light text-center py-3 mt-4">
         <small>&copy; <?= date('Y') ?> - Anderson Dias Takeno | Projeto Mini ERP</small>
     </footer>

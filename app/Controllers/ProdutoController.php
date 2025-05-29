@@ -19,4 +19,9 @@ class ProdutoController
             'produtos' => $produtos
         ]);
     }
+
+    public function criar()
+    {
+        return view('produtos/cadastro');
+    }
 }

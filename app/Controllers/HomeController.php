@@ -2,10 +2,14 @@
 
 namespace App\Controllers;
 
+use function App\Helpers\view;
+
 class HomeController
 {
     public function index()
     {
-        require __DIR__ . '/../Views/home/index.php';
+        view('home/index', [
+            'title' => 'Bem-vindo ao Mini ERP'
+        ]);
     }
 }
