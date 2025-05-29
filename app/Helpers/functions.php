@@ -1,6 +1,8 @@
 <?php
 namespace App\Helpers;
 
+namespace App\Helpers;
+
 // Verifica se a função ainda não foi declarada
 if (!function_exists('env')) {
     /**
