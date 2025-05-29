@@ -4,8 +4,6 @@ namespace App\Controllers;
 
 use function App\Helpers\view;
 
-use function App\Helpers\view;
-
 class ProdutoController
 {
     public function listar()
