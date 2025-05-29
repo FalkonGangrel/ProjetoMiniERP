@@ -1,7 +1,8 @@
 <?php
-namespace App\Helpers;
 
 namespace App\Helpers;
+
+use App\Core\clDB;
 
 // Verifica se a função ainda não foi declarada
 if (!function_exists('env')) {
@@ -22,6 +23,16 @@ if (!function_exists('env')) {
         // Retorna valor padrão caso não esteja definida
         return $default;
     }
+}
+
+function db(): clDB
+{
+    return new clDB(
+        $_ENV('DB_HOST'),
+        $_ENV('DB_USER'),
+        $_ENV('DB_PASS'),
+        $_ENV('DB_NAME')
+    );
 }
 
 function view(string $template, array $data = []): void
