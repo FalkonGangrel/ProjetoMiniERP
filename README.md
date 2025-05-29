@@ -22,14 +22,23 @@ Um sistema de gestão empresarial (Mini ERP) simples desenvolvido em **PHP** com
 
 ```
 ProjetoMiniERP/
-├── app/                  # Estrutura principal (Controllers, Models, Views, Core)
-├── config/               # Configurações gerais (como config.php)
-├── public/               # Pasta pública (index.php, .htaccess)
-├── routes/               # Arquivo de rotas do sistema (web.php)
-├── .env                  # Arquivo de variáveis de ambiente
-├── composer.json         # Autoload e dependências (futuro)
-├── sql_base.sql          # Script de criação do banco de dados
-└── README.md             # Este arquivo
+├── app/
+│   ├── Controllers/          # Lógica da aplicação (ProdutoController, PedidoController, EstoqueController)
+│   ├── Core/                 # Núcleo do sistema (Router.php, clDotEnv.php etc.)
+│   ├── Models/               # Modelos do sistema (Produto.php, Pedido.php, Estoque.php)
+│   ├── Views/
+│   │   ├── templates/        # Layout base (header.php, footer.php, base.php)
+│   │   ├── produtos/         # Views de produtos (lista.php)
+│   │   ├── pedidos/          # Views de pedidos (lista.php)
+│   │   └── estoques/         # Views de estoque (lista.php)
+│   └── helpers/              # Funções auxiliares (view.php)
+├── config/                   # Arquivos de configuração
+├── public/                   # Raiz pública (index.php, .htaccess)
+├── routes/                   # Rotas registradas (web.php)
+├── sql/                      # Base de dados (sql_base.sql)
+├── .env                      # Variáveis de ambiente
+├── composer.json             # Autoload e dependências
+└── README.md                 # Este arquivo
 ```
 
 ## ⚙️ Configuração do Ambiente
@@ -116,11 +125,11 @@ As tabelas possuem integridade relacional e índices otimizados.
 - [ ] Relatórios gerenciais
 - [ ] API REST para integração externa
 
-## 🛠️ Manutenção e Contribuições
+## 📼 Manutenção e Contribuições
 
 Este projeto está em desenvolvimento contínuo. Sugestões, melhorias e contribuições são bem-vindas!
 
 ---
 
-**Autor:** Anderson Dias Takeno
+**Autor:** Anderson Dias Takeno  
 **Licença:** MIT
