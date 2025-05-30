@@ -28,19 +28,24 @@ class Estoque
         return null;
     }
 
-    public function buscarPorProdutoId(int $produtoId): ?array
+    public function buscarPorProduto(int $produtoId): array
     {
         $sql = "SELECT * FROM estoques WHERE produto_id = ?";
         if ($this->conexao->query($sql, $produtoId)) {
-            return $this->conexao->fetchArray();
+            return $this->conexao->fetchAll();
         }
 
-        return null;
+        return [];
     }
 
-    public function atualizar(int $produtoId, int $quantidade): bool
+    public function atualizarPorProduto(int $produtoId, array $dados): bool
     {
         $sql = "UPDATE estoques SET quantidade = ? WHERE produto_id = ?";
-        return $this->conexao->query($sql, $quantidade, $produtoId);
+        $params = [
+            $dados['quantidade'] ?? 0,
+            $produtoId
+        ];
+
+        return $this->conexao->query($sql, ...$params);
     }
 }
