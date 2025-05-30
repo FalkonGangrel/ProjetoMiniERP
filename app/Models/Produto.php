@@ -10,7 +10,7 @@ class Produto
 
     public function __construct()
     {
-        $this->conexao = db();
+        $this->conexao = db(); // Retorna uma instância de clDB
     }
 
     public function salvar(array $dados): ?int
@@ -23,10 +23,8 @@ class Produto
             $dados['categoria'] ?? ''
         ];
 
-        $stmt = $this->conexao->query($sql, $params);
-
-        if ($stmt) {
-            return $this->conexao->lastInsertID();
+        if ($this->conexao->query($sql, ...$params)) {
+            return (int)$this->conexao->lastInsertID();
         }
 
         return null;
@@ -35,12 +33,34 @@ class Produto
     public function listarTodos(): array
     {
         $sql = "SELECT * FROM produtos";
-        $result = $this->conexao->query($sql);
-
-        if ($result instanceof \mysqli_result) {
-            return $result->fetch_all(MYSQLI_ASSOC);
+        if ($this->conexao->query($sql)) {
+            return $this->conexao->fetchAll();
         }
 
         return [];
+    }
+
+    public function buscarPorId(int $id): ?array
+    {
+        $sql = "SELECT * FROM produtos WHERE id = ?";
+        if ($this->conexao->query($sql, $id)) {
+            return $this->conexao->fetchArray();
+        }
+
+        return null;
+    }
+
+    public function atualizar(int $id, array $dados): bool
+    {
+        $sql = "UPDATE produtos SET nome = ?, descricao = ?, preco = ?, categoria = ? WHERE id = ?";
+        $params = [
+            $dados['nome'] ?? '',
+            $dados['descricao'] ?? '',
+            $dados['preco'] ?? 0,
+            $dados['categoria'] ?? '',
+            $id
+        ];
+
+        return $this->conexao->query($sql, ...$params);
     }
 }

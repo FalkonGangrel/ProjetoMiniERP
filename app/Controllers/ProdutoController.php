@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use function App\Helpers\view;
+use App\Models\Produto;
+use App\Models\Estoque;
 
 class ProdutoController
 {
@@ -24,4 +26,31 @@ class ProdutoController
     {
         return view('produtos/cadastro');
     }
+
+    public function editar($id)
+    {
+        $produtoModel = new Produto();
+        $produto = $produtoModel->buscarPorId($id);
+
+        $estoqueModel = new Estoque();
+        $estoque = $estoqueModel->buscarPorProduto($id);
+
+        return view('produtos/cadastro', compact('produto', 'estoque'));
+    }
+
+    public function atualizar()
+    {
+        $id = $_POST['id'];
+        $dados = $_POST;
+
+        $produtoModel = new Produto();
+        $estoqueModel = new Estoque();
+
+        $produtoModel->atualizar($id, $dados);
+        $estoqueModel->atualizarPorProduto($id, $dados);
+
+        header('Location: /produtos');
+        exit;
+    }
+
 }

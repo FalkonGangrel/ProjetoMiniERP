@@ -15,20 +15,34 @@ class Pedido
 
     public function salvar(array $dados): ?int
     {
-        $sql="INSERT INTO pedidos (cliente, total, frete, endereco) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO pedidos (cliente_nome, total, status, data) VALUES (?, ?, ?, ?)";
         $params = [
-            $dados['cliente'] ?? '',
-            $dados['total'] ?? '',
-            $dados['frete'] ?? '',
-            $dados['endereco'] ?? 0
+            $dados['cliente_nome'] ?? '',
+            $dados['total'] ?? 0,
+            $dados['status'] ?? 'pendente',
+            $dados['data'] ?? date('Y-m-d H:i:s')
         ];
 
-        $stmt = $this->conexao->query($sql, $params);
-
-        if ($stmt) {
-            return $this->conexao->lastInsertID();
+        if ($this->conexao->query($sql, ...$params)) {
+            return (int)$this->conexao->lastInsertID();
         }
 
         return null;
+    }
+
+    public function buscarPorId(int $id): ?array
+    {
+        $sql = "SELECT * FROM pedidos WHERE id = ?";
+        if ($this->conexao->query($sql, $id)) {
+            return $this->conexao->fetchArray();
+        }
+
+        return null;
+    }
+
+    public function atualizarStatus(int $id, string $status): bool
+    {
+        $sql = "UPDATE pedidos SET status = ? WHERE id = ?";
+        return $this->conexao->query($sql, $status, $id);
     }
 }

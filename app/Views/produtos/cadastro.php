@@ -1,6 +1,9 @@
 <div class="container mt-5">
     <h2>Cadastrar Produto</h2>
-    <form action="/produtos/salvar" method="POST">
+    <form action="<?= isset($produto) ? '/produtos/atualizar' : '/produtos/salvar' ?>" method="post">
+        <?php if (isset($produto['id'])): ?>
+            <input type="hidden" name="id" value="<?= $produto['id'] ?>">
+        <?php endif; ?>
         <div class="mb-3">
             <label for="nome" class="form-label">Nome do Produto</label>
             <input type="text" class="form-control" id="nome" name="nome" required>
