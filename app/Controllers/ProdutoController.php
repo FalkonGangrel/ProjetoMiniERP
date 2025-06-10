@@ -2,9 +2,9 @@
 
 namespace App\Controllers;
 
-use function App\Helpers\view;
 use App\Models\Produto;
 use App\Models\Estoque;
+use function App\Helpers\view;
 
 class ProdutoController
 {

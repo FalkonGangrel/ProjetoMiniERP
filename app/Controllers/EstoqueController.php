@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Estoque;
 use function App\Helpers\view;
 
 class EstoqueController

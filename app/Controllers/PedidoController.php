@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Pedido;
 use function App\Helpers\view;
 
 class ProdutoController
