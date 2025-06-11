@@ -9,7 +9,7 @@ class EstoqueController
 {
     public function criar()
     {
-        return view('estoques/cadastro');
+        return view('estoques/form');
     }
 
     public function salvar()

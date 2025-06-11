@@ -49,6 +49,16 @@ class Produto
 
         return null;
     }
+    
+        public function buscarPorCategoria(string $categoria): array
+        {
+            $sql = "SELECT * FROM produtos WHERE categoria = ?";
+            if ($this->conexao->query($sql, $categoria)) {
+                return $this->conexao->fetchAll();
+            }
+    
+            return [];
+        }
 
     public function atualizar(int $id, array $dados): bool
     {
@@ -62,5 +72,11 @@ class Produto
         ];
 
         return $this->conexao->query($sql, ...$params);
+    }
+
+    public function deletar(int $id): bool
+    {
+        $sql = "DELETE FROM produtos WHERE id = ?";
+        return $this->conexao->query($sql, $id);
     }
 }

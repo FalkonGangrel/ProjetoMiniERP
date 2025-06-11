@@ -22,20 +22,24 @@ class ProdutoController
         ]);
     }
 
-    public function criar()
+    public function cadastro()
     {
-        return view('produtos/cadastro');
+        return view('produtos/form');
     }
 
     public function editar($id)
     {
         $produtoModel = new Produto();
-        $produto = $produtoModel->buscarPorId($id);
+        $produto = $produtoModel->buscarPorId((int)$id);
+
+        if (!$produto) {
+            return view('produtos/erro', ['id' => $id]);
+        }
 
         $estoqueModel = new Estoque();
         $estoque = $estoqueModel->buscarPorProduto($id);
 
-        return view('produtos/cadastro', compact('produto', 'estoque'));
+        return view('produtos/form', compact('produto', 'estoque'));
     }
 
     public function atualizar()
