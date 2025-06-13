@@ -2,7 +2,7 @@
 
 /** @var array $produtos */
 
-$editando = isset($produto);
+$editando = !empty($produto['id']);
 $action = $editando ? '/produtos/atualizar?id=' . $produto['id'] : '/produtos/salvar';
 $titulo = $editando ? 'Editar Produto' : 'Novo Produto';
 
@@ -11,21 +11,36 @@ $titulo = $editando ? 'Editar Produto' : 'Novo Produto';
 <h2><?= $titulo ?></h2>
 
 <form method="post" action="<?= $action ?>">
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" name="nome" value="<?= $produto['nome'] ?? '' ?>" required><br>
+    <div class="mb-3">
+        <label for="nome" class="form-label">Nome</label>
+        <input type="text" class="form-control" name="nome" id="nome" value="<?= htmlspecialchars($produto['nome'] ?? '') ?>" required>
+    </div>
 
-    <label for="descricao">Descrição:</label>
-    <textarea id="descricao" name="descricao" required><?= $produto['descricao'] ?? '' ?></textarea><br>
+    <div class="mb-3">
+        <label for="descricao" class="form-label">Descrição</label>
+        <textarea class="form-control" name="descricao" id="descricao"><?= htmlspecialchars($produto['descricao'] ?? '') ?></textarea>
+    </div>
 
-    <label for="preco">Preço:</label>
-    <input type="number" step="0.01" id="preco" name="preco" value="<?= $produto['preco'] ?? '' ?>" required><br>
+    <div class="mb-3">
+        <label for="preco" class="form-label">Preço</label>
+        <input type="number" step="0.01" class="form-control" name="preco" id="preco" value="<?= htmlspecialchars($produto['preco'] ?? 0) ?>" required>
+    </div>
 
-    <label for="categoria">Categoria:</label>
-    <input type="text" id="categoria" name="categoria" value="<?= $produto['categoria'] ?? '' ?>"><br>
+    <div class="mb-3">
+        <label for="categoria" class="form-label">Categoria</label>
+        <input type="text" class="form-control" name="categoria" id="categoria" value="<?= htmlspecialchars($produto['categoria'] ?? '') ?>">
+    </div>
 
-    <button type="submit">Salvar</button>
+    <div class="mb-3">
+        <label for="variacao" class="form-label">Variação</label>
+        <input type="text" class="form-control" name="variacao" id="variacao" value="<?= htmlspecialchars($estoque['variacao'] ?? '') ?>">
+    </div>
+
+    <div class="mb-3">
+        <label for="quantidade" class="form-label">Quantidade</label>
+        <input type="number" class="form-control" name="quantidade" id="quantidade" value="<?= htmlspecialchars($estoque['quantidade'] ?? 0) ?>" required>
+    </div>
+
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <a href="/produtos" class="btn btn-secondary">Voltar</a>
 </form>
-
-<?php if (isset($produto)): ?>
-    <p><a href="/produtos">Cancelar</a></p>
-<?php endif; ?>

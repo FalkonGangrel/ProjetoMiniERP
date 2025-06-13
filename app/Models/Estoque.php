@@ -40,12 +40,21 @@ class Estoque
 
     public function atualizarPorProduto(int $produtoId, array $dados): bool
     {
-        $sql = "UPDATE estoques SET quantidade = ? WHERE produto_id = ?";
-        $params = [
-            $dados['quantidade'] ?? 0,
-            $produtoId
-        ];
+        // Verifica se já existe um estoque para o produto
+        $estoqueExistente = $this->buscarPorProduto($produtoId);
 
-        return $this->conexao->query($sql, ...$params);
+        if ($estoqueExistente) {
+            $sql = "UPDATE estoques SET variacao = ?, quantidade = ? WHERE produto_id = ?";
+            $params = [
+                $dados['variacao'] ?? '',
+                $dados['quantidade'] ?? 0,
+                $produtoId
+            ];
+            return $this->conexao->query($sql, ...$params);
+        } else {
+            // Se não existir, insere
+            return $this->salvar($dados) !== null;
+        }
+
     }
 }

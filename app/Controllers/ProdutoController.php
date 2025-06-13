@@ -10,11 +10,8 @@ class ProdutoController
 {
     public function listar()
     {
-        // Simulação de dados
-        $produtos = [
-            ['id' => 1, 'nome' => 'Produto A', 'preco' => 10.99, 'estoque' => 20],
-            ['id' => 2, 'nome' => 'Produto B', 'preco' => 20.49, 'estoque' => 10],
-        ];
+        $produtoModel = new Produto();
+        $produtos = $produtoModel->listarTodos();
 
         view('produtos/lista', [
             'title' => 'Lista de Produtos',
@@ -24,7 +21,11 @@ class ProdutoController
 
     public function cadastro()
     {
-        return view('produtos/form');
+        view('produtos/form', [
+            'title' => 'Novo Produto',
+            'produto' => [],
+            'estoque' => []
+        ]);
     }
 
     public function editar($id)
@@ -44,7 +45,12 @@ class ProdutoController
 
     public function atualizar()
     {
-        $id = $_POST['id'];
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+
+        if (!$id) {
+            echo "ID do produto não informado.";
+            return;
+        }
         $dados = $_POST;
 
         $produtoModel = new Produto();
@@ -55,6 +61,35 @@ class ProdutoController
 
         header('Location: /produtos');
         exit;
+    }
+
+    public function salvar()
+    {
+        $produtoModel = new Produto();
+        $estoqueModel = new Estoque();
+
+        $dadosProduto = [
+            'nome' => $_POST['nome'] ?? '',
+            'descricao' => $_POST['descricao'] ?? '',
+            'preco' => $_POST['preco'] ?? 0,
+            'categoria' => $_POST['categoria'] ?? '',
+            'variacao' => $_POST['variacao'] ?? ''
+        ];
+
+        $idProduto = $produtoModel->salvar($dadosProduto);
+
+        if ($idProduto) {
+            $estoqueModel->salvar([
+                'produto_id' => $idProduto,
+                'variacao' => $_POST['variacao'] ?? '',
+                'quantidade' => $_POST['quantidade'] ?? 0
+            ]);
+
+            header('Location: /produtos');
+            exit;
+        }
+
+        echo "Erro ao salvar o produto.";
     }
 
 }

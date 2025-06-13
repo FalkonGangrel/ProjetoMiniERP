@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Lista de Produtos</h2>
+    <h2><?= $title ?? 'Produtos' ?></h2>
     <a href="/produtos/novo" class="btn btn-primary">Novo Produto</a>
 </div>
 
@@ -8,7 +8,7 @@
         <tr>
             <th>ID</th>
             <th>Nome</th>
-            <th>Preço</th>
+            <th>Preço (R$)</th>
             <th>Estoque</th>
             <th>Ações</th>
         </tr>
@@ -19,7 +19,7 @@
                 <tr>
                     <td><?= htmlspecialchars($produto['id']) ?></td>
                     <td><?= htmlspecialchars($produto['nome']) ?></td>
-                    <td>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
+                    <td><?= number_format($produto['preco'], 2, ',', '.') ?></td>
                     <td><?= htmlspecialchars($produto['estoque']) ?></td>
                     <td>
                         <a href="/produtos/editar/<?= $produto['id'] ?>" class="btn btn-sm btn-warning">Editar</a>
