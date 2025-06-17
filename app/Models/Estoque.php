@@ -13,19 +13,42 @@ class Estoque
         $this->conexao = db();
     }
 
-    public function salvar(array $dados): ?int
+    public function salvar(int $produtoId, array $variacoes): bool
     {
-        $sql = "INSERT INTO estoques (produto_id, quantidade) VALUES (?, ?)";
-        $params = [
-            $dados['produto_id'] ?? 0,
-            $dados['quantidade'] ?? 0
-        ];
+        $sql = "INSERT INTO estoques (produto_id, variacao, quantidade) VALUES (?, ?, ?)";
 
-        if ($this->conexao->query($sql, ...$params)) {
-            return (int)$this->conexao->lastInsertID();
+        $this->conexao->begin();
+        try {
+            foreach ($variacoes as $variacao) {
+                $variacaoNome = trim($variacao['variacao'] ?? '');
+                $quantidade = (int)($variacao['quantidade'] ?? 0);
+
+                if (strlen($variacaoNome) < 3 || $quantidade < 0) {
+                    continue; // Ignora entradas inválidas
+                }
+
+                $this->conexao->query($sql, $produtoId, $variacaoNome, $quantidade);
+            }
+            $this->conexao->commit();
+            return true;
+        } catch (\Exception $e) {
+            $this->conexao->rollback();
+            return false;
         }
+    }
 
-        return null;
+    public function atualizar(int $produtoId, array $variacoes): bool
+    {
+        $this->conexao->begin();
+        try {
+            $this->conexao->query("DELETE FROM estoques WHERE produto_id = ?", $produtoId);
+            $this->salvar($produtoId, $variacoes);
+            $this->conexao->commit();
+            return true;
+        } catch (\Exception $e) {
+            $this->conexao->rollback();
+            return false;
+        }
     }
 
     public function buscarPorProduto(int $produtoId): array
@@ -53,7 +76,7 @@ class Estoque
             return $this->conexao->query($sql, ...$params);
         } else {
             // Se não existir, insere
-            return $this->salvar($dados) !== null;
+            return $this->salvar($produtoId, $dados) !== null;
         }
 
     }

@@ -83,6 +83,21 @@ class clDB
         return $this->queryCount;
     }
 
+    public function begin(): void
+    {
+        $this->pdo->beginTransaction();
+    }
+
+    public function commit(): void
+    {
+        $this->pdo->commit();
+    }
+
+    public function rollback(): void
+    {
+        $this->pdo->rollBack();
+    }
+
     private function error(string $mensagem): void
     {
         $data = date("Y-m-d H:i:s");

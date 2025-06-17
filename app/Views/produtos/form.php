@@ -33,12 +33,12 @@ $titulo = $editando ? 'Editar Produto' : 'Novo Produto';
 
     <div class="mb-3">
         <label for="variacao" class="form-label">Variação</label>
-        <input type="text" class="form-control" name="variacao" id="variacao" value="<?= htmlspecialchars($estoque['variacao'] ?? '') ?>">
+        <input type="text" class="form-control" name="variacao" id="variacao" value="<?= htmlspecialchars($estoque[0]['variacao'] ?? '') ?>">
     </div>
 
     <div class="mb-3">
         <label for="quantidade" class="form-label">Quantidade</label>
-        <input type="number" class="form-control" name="quantidade" id="quantidade" value="<?= htmlspecialchars($estoque['quantidade'] ?? 0) ?>" required>
+        <input type="number" class="form-control" name="quantidade" id="quantidade" value="<?= htmlspecialchars($estoque[0]['quantidade'] ?? 0) ?>" required>
     </div>
 
     <button type="submit" class="btn btn-success">Salvar</button>

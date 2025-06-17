@@ -72,15 +72,13 @@ class ProdutoController
             'nome' => $_POST['nome'] ?? '',
             'descricao' => $_POST['descricao'] ?? '',
             'preco' => $_POST['preco'] ?? 0,
-            'categoria' => $_POST['categoria'] ?? '',
-            'variacao' => $_POST['variacao'] ?? ''
+            'categoria' => $_POST['categoria'] ?? ''
         ];
 
         $idProduto = $produtoModel->salvar($dadosProduto);
 
         if ($idProduto) {
-            $estoqueModel->salvar([
-                'produto_id' => $idProduto,
+            $estoqueModel->salvar($idProduto,[
                 'variacao' => $_POST['variacao'] ?? '',
                 'quantidade' => $_POST['quantidade'] ?? 0
             ]);

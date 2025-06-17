@@ -32,7 +32,10 @@ class Produto
 
     public function listarTodos(): array
     {
-        $sql = "SELECT * FROM produtos";
+        $sql = "SELECT p.*, COALESCE(SUM(e.quantidade), 0) AS estoque_total
+                FROM produtos p
+                LEFT JOIN estoques e ON e.produto_id = p.id
+                GROUP BY p.id";
         if ($this->conexao->query($sql)) {
             return $this->conexao->fetchAll();
         }
@@ -76,7 +79,13 @@ class Produto
 
     public function deletar(int $id): bool
     {
-        $sql = "DELETE FROM produtos WHERE id = ?";
+        $sql = "UPDATE produtos SET ativo = 0 WHERE id = ?";
+        return $this->conexao->query($sql, $id);
+    }
+
+    public function reativar(int $id): bool
+    {
+        $sql = "UPDATE produtos SET ativo = 1 WHERE id = ?";
         return $this->conexao->query($sql, $id);
     }
 }
