@@ -51,13 +51,23 @@ class ProdutoController
             echo "ID do produto não informado.";
             return;
         }
-        $dados = $_POST;
 
         $produtoModel = new Produto();
         $estoqueModel = new Estoque();
 
-        $produtoModel->atualizar($id, $dados);
-        $estoqueModel->atualizarPorProduto($id, $dados);
+        $variacoes = $_POST['variacao'] ?? [];
+        $quantidades = $_POST['quantidade'] ?? [];
+
+        $dadosEstoque = [];
+        foreach ($variacoes as $index => $variacao) {
+            $dadosEstoque[] = [
+                'variacao' => $variacao,
+                'quantidade' => $quantidades[$index] ?? 0
+            ];
+        }
+
+        $produtoModel->atualizar($id, $_POST);
+        $estoqueModel->atualizarPorProduto($id, $dadosEstoque);
 
         header('Location: /produtos');
         exit;
@@ -67,7 +77,7 @@ class ProdutoController
     {
         $produtoModel = new Produto();
         $estoqueModel = new Estoque();
-
+        
         $dadosProduto = [
             'nome' => $_POST['nome'] ?? '',
             'descricao' => $_POST['descricao'] ?? '',
@@ -77,11 +87,19 @@ class ProdutoController
 
         $idProduto = $produtoModel->salvar($dadosProduto);
 
+        $variacoes = $_POST['variacao'] ?? [];
+        $quantidades = $_POST['quantidade'] ?? [];
+
+        $dadosEstoque = [];
+        foreach ($variacoes as $index => $variacao) {
+            $dadosEstoque[] = [
+                'variacao' => $variacao,
+                'quantidade' => $quantidades[$index] ?? 0
+            ];
+        }
+
         if ($idProduto) {
-            $estoqueModel->salvar($idProduto,[
-                'variacao' => $_POST['variacao'] ?? '',
-                'quantidade' => $_POST['quantidade'] ?? 0
-            ]);
+            $estoqueModel->salvar($idProduto,$dadosEstoque);
 
             header('Location: /produtos');
             exit;
