@@ -15,7 +15,7 @@ class clDB
     private PDO $pdo;
     private int $queryCount = 0;
     private string $class_error = 'clDB';
-    private string $log_path = __DIR__ . '/../log/db_errors.log';
+    private string $log_path = __DIR__ . '/../../storage/logs/db_errors.log';
     private PDOStatement|false $stmt = false;
 
     public function __construct(string $host, string $usuario, string $senha, string $banco, string $charset = 'utf8mb4')
@@ -103,6 +103,12 @@ class clDB
         $data = date("Y-m-d H:i:s");
         $ip = $_SERVER['REMOTE_ADDR'] ?? 'localhost';
         $log = "[{$data}] [{$ip}] [{$this->class_error}] {$mensagem}\n";
+
+        // Garante que o diretório existe
+        $dir = dirname($this->log_path);
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
 
         if (file_exists($this->log_path) && filesize($this->log_path) > 5 * 1024 * 1024) {
             $timestamp = date("Ymd_His");

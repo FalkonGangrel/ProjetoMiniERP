@@ -15,11 +15,10 @@ class Produto
 
     public function salvar(array $dados): ?int
     {
-        $sql = "INSERT INTO produtos (nome, descricao, preco, categoria) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO produtos (nome, descricao, categoria) VALUES (?, ?, ?)";
         $params = [
             $dados['nome'] ?? '',
             $dados['descricao'] ?? '',
-            $dados['preco'] ?? 0,
             $dados['categoria'] ?? ''
         ];
 
@@ -32,7 +31,7 @@ class Produto
 
     public function listarTodos(): array
     {
-        $sql = "SELECT p.*, COALESCE(SUM(e.quantidade), 0) AS estoque_total
+        $sql = "SELECT p.*, COALESCE(SUM(e.quantidade), 0) AS estoque_total, COALESCE(AVG(e.preco), 0) AS preco_medio
                 FROM produtos p
                 LEFT JOIN estoques e ON e.produto_id = p.id
                 GROUP BY p.id";
@@ -65,11 +64,10 @@ class Produto
 
     public function atualizar(int $id, array $dados): bool
     {
-        $sql = "UPDATE produtos SET nome = ?, descricao = ?, preco = ?, categoria = ? WHERE id = ?";
+        $sql = "UPDATE produtos SET nome = ?, descricao = ?, categoria = ? WHERE id = ?";
         $params = [
             $dados['nome'] ?? '',
             $dados['descricao'] ?? '',
-            $dados['preco'] ?? 0,
             $dados['categoria'] ?? '',
             $id
         ];

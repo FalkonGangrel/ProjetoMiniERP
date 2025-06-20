@@ -57,17 +57,18 @@ class ProdutoController
 
         $variacoes = $_POST['variacao'] ?? [];
         $quantidades = $_POST['quantidade'] ?? [];
+        $precos = $_POST['preco'] ?? [];
 
         $dadosEstoque = [];
         foreach ($variacoes as $index => $variacao) {
             $dadosEstoque[] = [
                 'variacao' => $variacao,
-                'quantidade' => $quantidades[$index] ?? 0
+                'quantidade' => $quantidades[$index] ?? 0,
+                'preco' => $precos[$index] ?? 0
             ];
         }
-
         $produtoModel->atualizar($id, $_POST);
-        $estoqueModel->atualizarPorProduto($id, $dadosEstoque);
+        $estoqueModel->atualizar($id, $dadosEstoque);
 
         header('Location: /produtos');
         exit;
@@ -77,35 +78,54 @@ class ProdutoController
     {
         $produtoModel = new Produto();
         $estoqueModel = new Estoque();
-        
+
         $dadosProduto = [
             'nome' => $_POST['nome'] ?? '',
             'descricao' => $_POST['descricao'] ?? '',
-            'preco' => $_POST['preco'] ?? 0,
             'categoria' => $_POST['categoria'] ?? ''
         ];
 
-        $idProduto = $produtoModel->salvar($dadosProduto);
-
-        $variacoes = $_POST['variacao'] ?? [];
-        $quantidades = $_POST['quantidade'] ?? [];
-
-        $dadosEstoque = [];
-        foreach ($variacoes as $index => $variacao) {
-            $dadosEstoque[] = [
-                'variacao' => $variacao,
-                'quantidade' => $quantidades[$index] ?? 0
-            ];
+        $variacoes = [];
+        if (!empty($_POST['variacao']) && is_array($_POST['variacao'])) {
+            foreach ($_POST['variacao'] as $i => $nome) {
+                $nome = trim($nome);
+                $quantidade = (int) ($_POST['quantidade'][$i] ?? 0);
+                $preco = (int) ($_POST['preco'][$i] ?? 0);
+                if ($nome !== '') {
+                    $variacoes[] = [
+                        'variacao' => $nome,
+                        'preco' => $preco ?? 0,
+                        'quantidade' => $quantidade
+                    ];
+                }
+            }
         }
 
-        if ($idProduto) {
-            $estoqueModel->salvar($idProduto,$dadosEstoque);
+        $idProduto = $produtoModel->salvar($dadosProduto);
 
+        if ($idProduto && !empty($variacoes)) {
+            $estoqueModel->salvar($idProduto, $variacoes);
             header('Location: /produtos');
             exit;
         }
 
         echo "Erro ao salvar o produto.";
+    }
+
+    public function excluir($id)
+    {
+        $id = (int)$id;
+
+        if (!$id) {
+            echo "ID do produto não informado.";
+            return;
+        }
+
+        $produtoModel = new Produto();
+        $produtoModel->deletar($id);
+
+        header('Location: /produtos');
+        exit;
     }
 
 }

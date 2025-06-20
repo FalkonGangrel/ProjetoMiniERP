@@ -9,6 +9,7 @@ return [
     '/produtos/salvar' => 'ProdutoController@salvar',
     '/produtos/editar/{id}' => 'ProdutoController@editar',
     '/produtos/atualizar' => 'ProdutoController@atualizar',
+    '/produtos/excluir/{id}' => 'ProdutoController@excluir',
 
     // Estoques
     '/estoques' => 'EstoqueController@listar',

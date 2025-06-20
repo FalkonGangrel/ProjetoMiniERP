@@ -8,7 +8,7 @@
         <tr>
             <th>ID</th>
             <th>Nome</th>
-            <th>Preço (R$)</th>
+            <th>Preço Médio (R$)</th>
             <th>Estoque</th>
             <th>Ações</th>
         </tr>
@@ -19,8 +19,8 @@
                 <tr>
                     <td><?= htmlspecialchars($produto['id']) ?></td>
                     <td><?= htmlspecialchars($produto['nome']) ?></td>
-                    <td><?= number_format($produto['preco'], 2, ',', '.') ?></td>
-                    <td><?= htmlspecialchars($produto['estoque']) ?></td>
+                    <td><?= number_format($produto['preco_medio'], 2, ',', '.') ?></td>
+                    <td><?= htmlspecialchars($produto['estoque_total']) ?></td>
                     <td>
                         <a href="/produtos/editar/<?= $produto['id'] ?>" class="btn btn-sm btn-warning">Editar</a>
                         <a href="/produtos/excluir/<?= $produto['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir este produto?')">Excluir</a>
