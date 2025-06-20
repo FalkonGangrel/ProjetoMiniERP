@@ -13,6 +13,29 @@ class Estoque
         $this->conexao = db();
     }
 
+    public function listarComProduto(): array
+    {
+        $sql = "SELECT e.id, e.variacao, e.quantidade, e.preco, p.nome AS produto
+                FROM estoques e
+                INNER JOIN produtos p ON p.id = e.produto_id
+                WHERE p.ativo = 1
+                ORDER BY p.nome, e.variacao";
+        $this->conexao->query($sql);
+        return $this->conexao->fetchAll();
+    }
+
+    public function atualizarVariação(int $id, array $dados): bool
+    {
+        $sql = "UPDATE estoques SET variacao = ?, quantidade = ?, preco = ? WHERE id = ?";
+        return $this->conexao->query($sql, $dados['variacao'], $dados['quantidade'], $dados['preco'], $id);
+    }
+
+    public function excluirVariação(int $id): bool
+    {
+        $sql = "UPDATE estoques SET quantidade = 0 WHERE id = ?";
+        return $this->conexao->query($sql, $id);
+    }
+
     public function salvar(int $produtoId, array $variacoes): bool
     {
         $sql = "INSERT INTO estoques (produto_id, variacao, preco, quantidade) VALUES (?, ?, ?, ?)";

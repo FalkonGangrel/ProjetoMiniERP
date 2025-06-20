@@ -5,7 +5,12 @@
     <meta charset="UTF-8">
     <title><?= $title ?? 'Mini ERP' ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--CSS-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!--Scripts-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body>
     <!-- Navbar -->
@@ -18,7 +23,7 @@
             <div class="collapse navbar-collapse" id="menuERP">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="/produtos">Produtos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/estoque">Estoque</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/estoques">Estoque</a></li>
                     <li class="nav-item"><a class="nav-link" href="/pedidos">Pedidos</a></li>
                     <li class="nav-item"><a class="nav-link" href="/cupons">Cupons</a></li>
                 </ul>

@@ -14,7 +14,8 @@ return [
 
     // Estoques
     '/estoques' => 'EstoqueController@listar',
-    '/estoques/novo' => 'EstoqueController@cadastro',
+    '/estoques/atualizar/{id}' => 'EstoqueController@atualizar',
+    '/estoques/excluir/{id}' => 'EstoqueController@excluir',
     '/estoques/salvar' => 'EstoqueController@salvar',
 
     // Pedidos

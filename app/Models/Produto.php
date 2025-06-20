@@ -52,15 +52,24 @@ class Produto
         return null;
     }
     
-        public function buscarPorCategoria(string $categoria): array
-        {
-            $sql = "SELECT * FROM produtos WHERE categoria = ?";
-            if ($this->conexao->query($sql, $categoria)) {
-                return $this->conexao->fetchAll();
-            }
-    
-            return [];
+    public function buscarPorCategoria(string $categoria): array
+    {
+        $sql = "SELECT * FROM produtos WHERE categoria = ?";
+        if ($this->conexao->query($sql, $categoria)) {
+            return $this->conexao->fetchAll();
         }
+
+        return [];
+    }
+
+    public function buscarPorNome(string $nome): ?array
+    {
+        $sql = "SELECT * FROM produtos WHERE nome = ?";
+        if ($this->conexao->query($sql, $nome)) {
+            return $this->conexao->fetchArray();
+        }
+        return null;
+    }
 
     public function atualizar(int $id, array $dados): bool
     {
