@@ -85,6 +85,9 @@ $titulo = $editando ? 'Editar Produto' : 'Novo Produto';
     </div>
 
     <button type="submit" class="btn btn-success">Salvar</button>
+    <?php if ($editando && !empty($produto['ativo'])): ?>
+        <a href="/produtos/excluir/<?= $produto['id'] ?>" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja inativar este produto?')">Inativar</a>
+    <?php endif; ?>
     <a href="/produtos" class="btn btn-secondary">Voltar</a>
 </form>
 

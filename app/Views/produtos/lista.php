@@ -22,8 +22,12 @@
                     <td><?= number_format($produto['preco_medio'], 2, ',', '.') ?></td>
                     <td><?= htmlspecialchars($produto['estoque_total']) ?></td>
                     <td>
-                        <a href="/produtos/editar/<?= $produto['id'] ?>" class="btn btn-sm btn-warning">Editar</a>
-                        <a href="/produtos/excluir/<?= $produto['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir este produto?')">Excluir</a>
+                        <?php if (!empty($produto['ativo'])): ?>
+                            <a href="/produtos/editar/<?= $produto['id'] ?>" class="btn btn-sm btn-warning">Editar</a>
+                            <a href="/produtos/excluir/<?= $produto['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir este produto?')">Excluir</a>
+                        <?php else: ?>
+                            <a href="/produtos/reativar/<?= $produto['id'] ?>" class="btn btn-sm btn-success">Reativar</a>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

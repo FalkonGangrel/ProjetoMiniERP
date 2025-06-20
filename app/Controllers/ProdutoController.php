@@ -128,4 +128,20 @@ class ProdutoController
         exit;
     }
 
+    public function reativar($id)
+    {
+        $id = (int)$id;
+
+        if (!$id) {
+            echo "ID do produto não informado.";
+            return;
+        }
+
+        $produtoModel = new Produto();
+        $produtoModel->reativar($id);
+
+        header('Location: /produtos');
+        exit;
+    }
+
 }
