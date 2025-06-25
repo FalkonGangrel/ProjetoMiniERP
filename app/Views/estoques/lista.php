@@ -58,6 +58,19 @@
                 const quantidade = row.querySelector('input[name="quantidade"]').value;
                 const preco = row.querySelector('input[name="preco"]').value;
 
+                if (variacao.length < 3) {
+                    alert("A variação deve ter pelo menos 3 caracteres.");
+                    return;
+                }
+                if (isNaN(quantidade) || quantidade < 0) {
+                    alert("Quantidade deve ser um número maior ou igual a 0.");
+                    return;
+                }
+                if (isNaN(preco) || preco < 0) {
+                    alert("Preço deve ser um número maior ou igual a 0.");
+                    return;
+                }
+
                 fetch(`/estoques/atualizar/${id}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -106,6 +119,19 @@
                 const variacao = novaLinha.querySelector('input[name="variacao"]').value;
                 const quantidade = novaLinha.querySelector('input[name="quantidade"]').value;
                 const preco = novaLinha.querySelector('input[name="preco"]').value;
+
+                if (variacao.length < 3) {
+                    alert("A variação deve ter pelo menos 3 caracteres.");
+                    return;
+                }
+                if (isNaN(quantidade) || quantidade < 0) {
+                    alert("Quantidade deve ser um número maior ou igual a 0.");
+                    return;
+                }
+                if (isNaN(preco) || preco < 0) {
+                    alert("Preço deve ser um número maior ou igual a 0.");
+                    return;
+                }
 
                 fetch('/estoques/salvar', {
                     method: 'POST',
