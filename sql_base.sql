@@ -2,7 +2,7 @@
 -- Servidor:                     127.0.0.1
 -- Versão do servidor:           10.4.24-MariaDB - mariadb.org binary distribution
 -- OS do Servidor:               Win64
--- HeidiSQL Versão:              12.9.0.6999
+-- HeidiSQL Versão:              12.11.0.7065
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -16,6 +16,7 @@
 
 
 -- Copiando estrutura do banco de dados para db_mini_erp
+DROP DATABASE IF EXISTS `db_mini_erp`;
 CREATE DATABASE IF NOT EXISTS `db_mini_erp` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 USE `db_mini_erp`;
 
@@ -31,8 +32,7 @@ CREATE TABLE IF NOT EXISTS `cupons` (
   UNIQUE KEY `codigo` (`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Copiando dados para a tabela db_mini_erp.cupons: ~0 rows (aproximadamente)
-DELETE FROM `cupons`;
+-- Exportação de dados foi desmarcado.
 
 -- Copiando estrutura para tabela db_mini_erp.estoques
 DROP TABLE IF EXISTS `estoques`;
@@ -40,19 +40,20 @@ CREATE TABLE IF NOT EXISTS `estoques` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `produto_id` int(11) NOT NULL,
   `variacao` varchar(100) DEFAULT NULL,
+  `preco` decimal(10,2) NOT NULL DEFAULT 0.00,
   `quantidade` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `produto_id` (`produto_id`),
-  CONSTRAINT `estoques_ibfk_1` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`id`)
+  KEY `estoques_produtos` (`produto_id`),
+  CONSTRAINT `estoques_produtos` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Copiando dados para a tabela db_mini_erp.estoques: ~0 rows (aproximadamente)
-DELETE FROM `estoques`;
+-- Exportação de dados foi desmarcado.
 
 -- Copiando estrutura para tabela db_mini_erp.pedidos
 DROP TABLE IF EXISTS `pedidos`;
 CREATE TABLE IF NOT EXISTS `pedidos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cliente_nome` varchar(255) DEFAULT NULL,
   `total` decimal(10,2) DEFAULT NULL,
   `frete` decimal(10,2) DEFAULT NULL,
   `cep` varchar(9) DEFAULT NULL,
@@ -62,20 +63,40 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Copiando dados para a tabela db_mini_erp.pedidos: ~0 rows (aproximadamente)
-DELETE FROM `pedidos`;
+-- Exportação de dados foi desmarcado.
+
+-- Copiando estrutura para tabela db_mini_erp.pedido_itens
+DROP TABLE IF EXISTS `pedido_itens`;
+CREATE TABLE IF NOT EXISTS `pedido_itens` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pedido_id` int(11) NOT NULL,
+  `produto_id` int(11) NOT NULL,
+  `variacao` int(11) DEFAULT NULL,
+  `quantidade` int(11) NOT NULL DEFAULT 1,
+  `preco_unitario` decimal(10,2) NOT NULL DEFAULT 0.00,
+  PRIMARY KEY (`id`),
+  KEY `pedidoItens_pedidos` (`pedido_id`),
+  KEY `pedidoItens_produtos` (`produto_id`),
+  KEY `pedidoItens_variacao` (`variacao`),
+  CONSTRAINT `pedidoItens_pedidos` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos` (`id`),
+  CONSTRAINT `pedidoItens_produtos` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`id`),
+  CONSTRAINT `pedidoItens_variacao` FOREIGN KEY (`variacao`) REFERENCES `estoques` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Exportação de dados foi desmarcado.
 
 -- Copiando estrutura para tabela db_mini_erp.produtos
 DROP TABLE IF EXISTS `produtos`;
 CREATE TABLE IF NOT EXISTS `produtos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(255) NOT NULL,
-  `preco` decimal(10,2) NOT NULL,
+  `descricao` mediumtext NOT NULL,
+  `categoria` varchar(255) NOT NULL,
+  `ativo` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Copiando dados para a tabela db_mini_erp.produtos: ~0 rows (aproximadamente)
-DELETE FROM `produtos`;
+-- Exportação de dados foi desmarcado.
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

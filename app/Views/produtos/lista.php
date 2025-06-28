@@ -1,3 +1,5 @@
+<?php /** @var array $produtos */ ?>
+
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2><?= $title ?? 'Produtos' ?></h2>
     <a href="/produtos/novo" class="btn btn-primary">Novo Produto</a>

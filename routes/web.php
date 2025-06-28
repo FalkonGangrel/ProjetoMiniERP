@@ -17,14 +17,13 @@ return [
     '/estoques/atualizar/{id}' => 'EstoqueController@atualizar',
     '/estoques/excluir/{id}' => 'EstoqueController@excluir',
     '/estoques/salvar' => 'EstoqueController@salvar',
+    '/api/estoques/por-produto/{id}' => 'App\Controllers\Api\EstoqueApiController@porProduto',
 
     // Pedidos
     '/pedidos' => 'PedidoController@listar',
-    '/pedidos/adicionar/{id}' => 'PedidoController@adicionarCarrinho',
-    '/pedidos/remover/{id}' => 'PedidoController@removerCarrinho',
-    '/pedidos/carrinho' => 'PedidoController@carrinho',
-    '/pedidos/finalizar' => 'PedidoController@finalizar',
-    '/pedidos/confirmar' => 'PedidoController@confirmar',
+    '/pedidos/novo' => 'PedidoController@criar',
+    '/pedidos/salvar' => 'PedidoController@salvar',
+    '/pedidos/ver/{id}' => 'PedidoController@ver',
 
     // Cupons (opcional)
     '/cupons/validar/{codigo}' => 'CupomController@validar',

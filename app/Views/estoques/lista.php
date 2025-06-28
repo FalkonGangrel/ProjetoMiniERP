@@ -2,7 +2,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>Gerenciar Estoque</h2>
-    <button class="btn btn-success" id="btn-nova-variacao">Nova Variação</button>
+    <button class="btn btn-primary" id="btn-nova-variacao">Nova Variação</button>
 </div>
 
 <table class="table table-bordered table-striped" id="tabela-estoque">

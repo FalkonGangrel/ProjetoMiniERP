@@ -95,4 +95,14 @@ class Estoque
 
         return [];
     }
+
+    public function listarPorProdutoComEstoque($produtoId): array
+    {
+        $sql = "SELECT id, variacao, preco, quantidade
+                FROM estoques
+                WHERE produto_id = ? AND quantidade > 0
+                ORDER BY variacao";
+        $this->conexao->query($sql, $produtoId);
+        return $this->conexao->fetchAll();
+    }
 }
