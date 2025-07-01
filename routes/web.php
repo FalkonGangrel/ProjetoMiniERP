@@ -17,7 +17,7 @@ return [
     '/estoques/atualizar/{id}' => 'EstoqueController@atualizar',
     '/estoques/excluir/{id}' => 'EstoqueController@excluir',
     '/estoques/salvar' => 'EstoqueController@salvar',
-    '/api/estoques/por-produto/{id}' => 'App\Controllers\Api\EstoqueApiController@porProduto',
+    '/api/estoques/por-produto/{id}' => 'Api\EstoqueApiController@porProduto',
 
     // Pedidos
     '/pedidos' => 'PedidoController@listar',

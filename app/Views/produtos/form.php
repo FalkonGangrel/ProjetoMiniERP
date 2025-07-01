@@ -27,7 +27,7 @@ $titulo = $editando ? 'Editar Produto' : 'Novo Produto';
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Variações</label>
+        <label for="variacoes-container" class="form-label">Variações</label>
         <div class="row mb-2 variacao-label">
             <div class="col-md-5">
                 <strong>Variação</strong>

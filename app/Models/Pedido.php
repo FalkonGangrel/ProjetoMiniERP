@@ -34,7 +34,7 @@ class Pedido
         );
     }
 
-    public function salvar(array $pedidoData, array $itens): bool
+    public function salvar(array $pedidoData, array $itens): int
     {
         $this->conexao->begin();
         try {
@@ -54,33 +54,40 @@ class Pedido
 
             $pedidoId = $this->conexao->lastInsertID();
 
-            $sqlItem = "INSERT INTO pedido_itens (pedido_id, produto_id, variacao, quantidade, preco_unitario) VALUES (?, ?, ?, ?, ?)";
-
-            foreach ($itens as $item) {
-                $variacaoId = $item['variacao'];
-                $quantidade = $item['quantidade'];
-
-                // Valida variação e estoque
-                if (!$this->validarEAtualizarEstoque($variacaoId, $quantidade)) {
-                    throw new \Exception("Variação inválida ou estoque insuficiente");
+            foreach ($itens['itens'] as $item) {
+                // 1) Verifica estoque disponível
+                $sqlCheck = "SELECT quantidade FROM estoques WHERE id = ?";
+                $this->conexao->query($sqlCheck, $item['variacao']);
+                $estoque = $this->conexao->fetchArray();
+                if (!$estoque) {
+                    throw new \Exception('Variação inválida.');
+                }
+                if ($estoque['quantidade'] < $item['quantidade']) {
+                    throw new \Exception('Estoque insuficiente para variação.');
                 }
 
-                // Insere item no pedido
+                // 2) Abate estoque
+                $sqlUpdate = "UPDATE estoques SET quantidade = quantidade - ? WHERE id = ?";
+                $this->conexao->query($sqlUpdate, $item['quantidade'], $item['variacao']);
+
+                // 3) Insere item
+                $sqlItem = "INSERT INTO pedido_itens (pedido_id, produto_id, variacao, quantidade, preco_unitario) VALUES (?, ?, ?, ?, ?)";
                 $this->conexao->query(
                     $sqlItem,
                     $pedidoId,
                     $item['produto_id'],
-                    $variacaoId,
-                    $quantidade,
+                    $item['variacao'],
+                    $item['quantidade'],
                     $item['preco']
                 );
             }
 
             $this->conexao->commit();
-            return true;
+            return $pedidoId;
+
         } catch (\Exception $e) {
             $this->conexao->rollback();
-            return false;
+            throw $e; // Opcional: para log
         }
     }
 

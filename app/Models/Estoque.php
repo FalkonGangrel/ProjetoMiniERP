@@ -38,10 +38,11 @@ class Estoque
 
     public function salvar(int $produtoId, array $variacoes): bool
     {
-        $sql = "INSERT INTO estoques (produto_id, variacao, preco, quantidade) VALUES (?, ?, ?, ?)";
 
         $this->conexao->begin();
         try {
+            $this->conexao->query("DELETE FROM estoques WHERE produto_id = ?", $produtoId);
+            $sql = "INSERT INTO estoques (produto_id, variacao, preco, quantidade) VALUES (?, ?, ?, ?)";
             foreach ($variacoes as $variacao) {
                 $variacaoNome = trim($variacao['variacao'] ?? '');
                 $quantidade = (int)($variacao['quantidade'] ?? 0);
@@ -65,24 +66,62 @@ class Estoque
     {
         $this->conexao->begin();
         try {
-            $this->conexao->query("DELETE FROM estoques WHERE produto_id = ?", $produtoId);
-            $sql = "INSERT INTO estoques (produto_id, variacao, preco, quantidade) VALUES (?, ?, ?, ?)";
+            // 1) Busque as variações já salvas para esse produto
+            $sqlExistentes = "SELECT id, variacao FROM estoques WHERE produto_id = ?";
+            $this->conexao->query($sqlExistentes, $produtoId);
+            $existentes = $this->conexao->fetchAll();
+            $existentesMap = [];
+            foreach ($existentes as $v) {
+                $existentesMap[$v['variacao']] = $v['id'];
+            }
+
+            // 2) Ids que devem permanecer
+            $variacoesAtuais = [];
+
             foreach ($variacoes as $variacao) {
                 $variacaoNome = trim($variacao['variacao'] ?? '');
                 $quantidade = (int)($variacao['quantidade'] ?? 0);
                 $preco = (float)($variacao['preco'] ?? 0);
 
                 if (strlen($variacaoNome) < 1 || $quantidade < 0) {
-                    continue; // Ignora entradas inválidas
+                    continue;
                 }
 
-                $this->conexao->query($sql, $produtoId, $variacaoNome, $preco, $quantidade);
+                if (isset($existentesMap[$variacaoNome])) {
+                    // Já existe → UPDATE
+                    $idEstoque = $existentesMap[$variacaoNome];
+                    $sqlUpdate = "UPDATE estoques SET preco = ?, quantidade = ? WHERE id = ?";
+                    $this->conexao->query($sqlUpdate, $preco, $quantidade, $idEstoque);
+                    $variacoesAtuais[] = $idEstoque;
+                } else {
+                    // Não existe → INSERT
+                    $sqlInsert = "INSERT INTO estoques (produto_id, variacao, preco, quantidade) VALUES (?, ?, ?, ?)";
+                    $this->conexao->query($sqlInsert, $produtoId, $variacaoNome, $preco, $quantidade);
+                    $novoId = $this->conexao->lastInsertID();
+                    $variacoesAtuais[] = $novoId;
+                }
             }
+
+            // 3) Verifique se alguém ficou órfão → se quiser permitir exclusão de variações removidas
+            foreach ($existentesMap as $variacaoNome => $idEstoque) {
+                if (!in_array($idEstoque, $variacoesAtuais)) {
+                    // Antes de excluir, veja se está usado em pedidos
+                    $sqlCheck = "SELECT COUNT(*) as total FROM pedido_itens WHERE variacao = ?";
+                    $this->conexao->query($sqlCheck, $idEstoque);
+                    $row = $this->conexao->fetchArray();
+                    if ($row['total'] > 0) {
+                        throw new \Exception("Não é possível excluir a variação '{$variacaoNome}' pois já existe em pedidos.");
+                    }
+                    $this->conexao->query("DELETE FROM estoques WHERE id = ?", $idEstoque);
+                }
+            }
+
             $this->conexao->commit();
             return true;
+
         } catch (\Exception $e) {
             $this->conexao->rollback();
-            return false;
+            throw $e; // propaga msg para Controller
         }
     }
 
