@@ -30,6 +30,7 @@ return [
 
     //Webhook
     '/webhook/pedido' => 'WebhookController@receberPedido',
+    '/webhook' => 'WebhookController@atualizarStatus',
 
     // Relatórios
     '/relatorios' => 'RelatorioController@exibir',

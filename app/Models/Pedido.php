@@ -136,4 +136,31 @@ class Pedido
         return null;
     }
 
+    public function atualizarStatus(int $id, string $status): bool
+    {
+        $sql = "UPDATE pedidos SET status = ? WHERE id = ?";
+        return $this->conexao->query($sql, $status, $id);
+    }
+
+    public function excluir(int $id): bool
+    {
+        // 1) Reverte estoque dos itens
+        $sql = "SELECT variacao, quantidade FROM pedido_itens WHERE pedido_id = ?";
+        $this->conexao->query($sql, $id);
+        $itens = $this->conexao->fetchAll();
+
+        foreach ($itens as $item) {
+            $this->conexao->query(
+                "UPDATE estoques SET quantidade = quantidade + ? WHERE id = ?",
+                $item['quantidade'],
+                $item['variacao']
+            );
+        }
+
+        // 2) Deleta itens e pedido
+        $this->conexao->query("DELETE FROM pedido_itens WHERE pedido_id = ?", $id);
+        $this->conexao->query("DELETE FROM pedidos WHERE id = ?", $id);
+
+        return true;
+    }
 }

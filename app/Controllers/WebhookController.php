@@ -39,4 +39,24 @@ class WebhookController {
             echo "Status do pedido #$id atualizado para $status.";
         }
     }
+
+    public function atualizarStatus() {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $id = (int)($data['id'] ?? 0);
+        $status = trim($data['status'] ?? '');
+
+        if ($id < 1 || !$status) {
+            http_response_code(400);
+            echo "ID ou status inválido.";
+            return;
+        }
+
+        $pedidoModel = new Pedido();
+        if ($status === 'cancelado') {
+            $pedidoModel->excluir($id); // Reverter estoque
+        } else {
+            $pedidoModel->atualizarStatus($id, $status);
+        }
+        echo "Webhook recebido!";
+    }
 }
