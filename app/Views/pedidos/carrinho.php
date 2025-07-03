@@ -53,7 +53,7 @@
 
     <div class="card p-3 mb-3">
         <div class="row g-3">
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <label for="cep">CEP</label>
                 <input type="text" class="form-control" id="cep">
             </div>
@@ -61,15 +61,19 @@
                 <label for="endereco">Endereço</label>
                 <input type="text" class="form-control" id="endereco">
             </div>
-            <div class="col-md-6">
-                <label for="cliente">Cliente</label>
-                <input type="text" class="form-control" id="cliente">
-            </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label for="frete">Frete (R$)</label>
                 <input type="number" id="frete" class="form-control" value="0" step="0.01">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-5">
+                <label for="cliente">Cliente</label>
+                <input type="text" class="form-control" id="cliente">
+            </div>
+            <div class="col-md-5">
+                <label for="email">E-mail</label>
+                <input type="email" class="form-control" id="email">
+            </div>
+            <div class="col-md-2">
                 <label for="total">Total (R$)</label>
                 <input type="text" class="form-control" id="total" readonly>
             </div>
@@ -220,26 +224,27 @@ document.querySelector("#adicionarItem").addEventListener("click", () => {
 // Evento: finalizar pedido
 
 document.querySelector("#finalizarPedido").addEventListener("click", () => {
-    const cliente = document.querySelector("#cliente").value
-    const endereco = document.querySelector("#endereco").value
-    const cep = document.querySelector("#cep").value
-    const frete = parseFloat(document.querySelector("#frete").value) || 0
-    const total = parseFloat(document.querySelector("#total").value) || 0
+    const cliente = document.querySelector("#cliente").value;
+    const endereco = document.querySelector("#endereco").value;
+    const cep = document.querySelector("#cep").value;
+    const email = document.querySelector("#email").value;
+    const frete = parseFloat(document.querySelector("#frete").value) || 0;
+    const total = parseFloat(document.querySelector("#total").value) || 0;
 
     if (!cliente || !endereco || !cep || itens.length === 0) {
-        alert("Preencha os dados do cliente e adicione itens.")
-        return
+        alert("Preencha os dados do cliente e adicione itens.");
+        return;
     }
 
     fetch('/pedidos/salvar', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ cliente, endereco, cep, frete, total, itens })
+        body: JSON.stringify({ cliente, endereco, cep, frete, total, itens, email })
     })
     .then(resp => resp.text())
     .then(msg => {
-        alert(msg)
-        location.reload()
+        alert(msg);
+        location.reload();
     })
     .catch(() => alert("Erro ao salvar pedido"))
 })

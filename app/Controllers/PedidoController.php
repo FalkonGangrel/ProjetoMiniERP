@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Pedido;
 use function App\Helpers\view;
+use function App\Helpers\enviarEmailPedido;
 
 class PedidoController
 {
@@ -50,15 +51,20 @@ class PedidoController
         ]);
 
         if ($pedidoId) {
-            // --- Envio de email ---
-            $to = "cliente@teste.com"; // substitua pelo email do cliente se houver campo
-            $subject = "Confirmação do Pedido #$pedidoId";
-            $message = "Seu pedido #$pedidoId foi realizado com sucesso. Total: R$ {$dados['total']}";
-            $headers = "From: no-reply@seudominio.com\r\n";
-
-            mail($to, $subject, $message, $headers);
+            // Busca pedido salvo para detalhar o e-mail
+            $pedido = $pedidoModel->buscarComItens($pedidoId);
+            $enviado = enviarEmailPedido(
+                'cliente@email.com', // OU $dados['email'] se capturar no formulário
+                $dados['cliente'],
+                $pedido
+            );
 
             echo "Pedido #$pedidoId salvo com sucesso.";
+            if ($enviado) {
+                echo " E-mail enviado!";
+            } else {
+                echo " Mas ocorreu um problema ao enviar o e-mail.";
+            }
         } else {
             http_response_code(500);
             echo "Erro ao salvar o pedido.";
