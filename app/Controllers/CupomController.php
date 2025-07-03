@@ -9,6 +9,7 @@ class CupomController
     public function validar($codigo)
     {
         $codigo = trim($codigo);
+        $subtotal = isset($_GET['subtotal']) ? (float)$_GET['subtotal'] : 0;
 
         if (empty($codigo)) {
             http_response_code(400);
@@ -31,11 +32,20 @@ class CupomController
             return;
         }
 
+        if ($subtotal < $cupom['valor_minimo']) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => "Subtotal insuficiente. Valor mínimo para usar o cupom: R$ " . number_format($cupom['valor_minimo'], 2, ',', '.')
+            ]);
+            return;
+        }
+
         echo json_encode([
             'success' => true,
             'desconto' => $cupom['desconto'],
             'valor_minimo' => $cupom['valor_minimo'],
-            'message' => 'Cupom válido.'
+            'message' => 'Cupom válido!',
         ]);
     }
 }

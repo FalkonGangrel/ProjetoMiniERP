@@ -65,20 +65,24 @@
                 <label for="cliente">Cliente</label>
                 <input type="text" class="form-control" id="cliente">
             </div>
-            <div class="col-md-2">
-                <label for="cupom">Cupom</label>
-                <input type="text" id="cupom" class="form-control">
-                <button id="validarCupom" class="btn btn-secondary mt-2">Aplicar Cupom</button>
-            </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <label for="frete">Frete (R$)</label>
                 <input type="number" id="frete" class="form-control" value="0" step="0.01">
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <label for="total">Total (R$)</label>
                 <input type="text" class="form-control" id="total" readonly>
             </div>
         </div>
+    </div>
+
+    <div class="card p-3 mb-3">
+    <h5>Aplicar Cupom</h5>
+    <div class="input-group">
+        <input type="text" id="cupom" class="form-control" placeholder="Digite o código do cupom">
+        <button id="validarCupom" class="btn btn-outline-primary">Validar Cupom</button>
+    </div>
+    <small id="cupomFeedback" class="text-muted mt-1"></small>
     </div>
 
     <button class="btn btn-primary" id="finalizarPedido">Finalizar Pedido</button>
@@ -88,6 +92,16 @@
 let itens = [];
 let variacoesDisponiveis = {}; // id => {variacao, preco, quantidade}
 let descontoCupom = 0;
+
+
+function calcularSubtotal() {
+    let subtotal = 0;
+    itens.forEach(item => {
+        subtotal += item.quantidade * item.preco;
+    });
+    return subtotal;
+}
+
 
 function atualizarTabela() {
     const tbody = document.querySelector("#tabelaItens tbody");
@@ -234,22 +248,33 @@ document.querySelector("#finalizarPedido").addEventListener("click", () => {
 
 document.querySelector("#validarCupom").addEventListener("click", () => {
     const codigo = document.querySelector("#cupom").value.trim();
+    const feedback = document.querySelector("#cupomFeedback");
+
     if (!codigo) {
-        alert("Informe o cupom");
+        feedback.innerText = "Informe o código do cupom.";
+        feedback.className = "text-danger mt-1";
         return;
     }
 
-    fetch(`/cupons/validar/${codigo}`)
+    const subtotal = calcularSubtotal(); // sua função de subtotal
+
+    fetch(`/cupons/validar/${codigo}?subtotal=${subtotal}`)
         .then(resp => resp.json())
         .then(data => {
-            if (data.valid) {
-                alert(`Cupom válido! Desconto de R$ ${data.desconto}`);
-                descontoCupom = parseFloat(data.desconto);
-            } else {
-                alert("Cupom inválido ou expirado");
-                descontoCupom = 0;
-            }
-            atualizarTabela();
+        if (data.success) {
+            feedback.innerText = `✅ ${data.message} Desconto: ${data.desconto}%`;
+            feedback.className = "text-success mt-1";
+            descontoCupom = parseFloat(data.desconto);
+        } else {
+            feedback.innerText = `❌ ${data.message}`;
+            feedback.className = "text-danger mt-1";
+            descontoCupom = 0;
+        }
+        atualizarTabela();
+        })
+        .catch(() => {
+        feedback.innerText = "Erro ao validar cupom.";
+        feedback.className = "text-danger mt-1";
         });
 });
 
