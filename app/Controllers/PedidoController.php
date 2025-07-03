@@ -39,6 +39,7 @@ class PedidoController
         $pedidoModel = new Pedido();
         $pedidoId = $pedidoModel->salvar([
             'cliente_nome' => $dados['cliente'],
+            'cliente_email' => $dados['email'] ?? '',
             'total' => $dados['total'] ?? 0,
             'frete' => $dados['frete'] ?? 0,
             'cep' => $dados['cep'] ?? '',

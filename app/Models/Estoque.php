@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use function App\Helpers\db;
+use function App\Helpers\logErro;
 
 class Estoque
 {
@@ -58,6 +59,7 @@ class Estoque
             return true;
         } catch (\Exception $e) {
             $this->conexao->rollback();
+            logErro($e->getMessage());
             return false;
         }
     }
@@ -121,6 +123,7 @@ class Estoque
 
         } catch (\Exception $e) {
             $this->conexao->rollback();
+            logErro($e->getMessage());
             throw $e; // propaga msg para Controller
         }
     }

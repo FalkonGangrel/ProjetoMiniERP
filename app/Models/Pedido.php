@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use function App\Helpers\db;
+use function App\Helpers\logErro;
 
 class Pedido
 {
@@ -13,34 +14,14 @@ class Pedido
         $this->conexao = db();
     }
 
-    private function validarEAtualizarEstoque(int $variacaoId, int $quantidade): bool
-    {
-        $sql = "SELECT quantidade FROM estoques WHERE id = ?";
-        if (!$this->conexao->query($sql, $variacaoId)) {
-            return false; // Variação não encontrada
-        }
-
-        $estoque = $this->conexao->fetchArray();
-        if (!$estoque || $estoque['quantidade'] < $quantidade) {
-            return false; // Estoque insuficiente
-        }
-
-        // Atualiza o estoque
-        $novaQuantidade = $estoque['quantidade'] - $quantidade;
-        return $this->conexao->query(
-            "UPDATE estoques SET quantidade = ? WHERE id = ?",
-            $novaQuantidade,
-            $variacaoId
-        );
-    }
-
     public function salvar(array $pedidoData, array $itens): int
     {
         $this->conexao->begin();
         try {
-            $sqlPedido = "INSERT INTO pedidos (cliente_nome, total, frete, cep, endereco, status, data) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $sqlPedido = "INSERT INTO pedidos (cliente_nome, cliente_email, total, frete, cep, endereco, status, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $paramsPedido = [
                 $pedidoData['cliente_nome'] ?? '',
+                $pedidoData['cliente_email'] ?? '',
                 $pedidoData['total'] ?? 0,
                 $pedidoData['frete'] ?? 0,
                 $pedidoData['cep'] ?? '',
@@ -87,6 +68,7 @@ class Pedido
 
         } catch (\Exception $e) {
             $this->conexao->rollback();
+            logErro($e->getMessage());
             throw $e; // Opcional: para log
         }
     }
@@ -125,6 +107,7 @@ class Pedido
             return [
                 'id' => $pedido['id'],
                 'cliente_nome' => $pedido['cliente_nome'],
+                'cliente_email' => $pedido['cliente_email'],
                 'total' => $pedido['total'],
                 'frete' => $pedido['frete'],
                 'status' => $pedido['status'],

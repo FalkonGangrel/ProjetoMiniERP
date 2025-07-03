@@ -55,4 +55,8 @@ function view(string $template, array $data = []): void
     require __DIR__ . '/../views/templates/base.php';
 }
 
+function logErro($mensagem) {
+    $logFile = __DIR__ . '/../../storage/logs/errors.log';;
+    file_put_contents($logFile, "[" . date('Y-m-d H:i:s') . "] $mensagem" . PHP_EOL, FILE_APPEND);
+}
 ?>
