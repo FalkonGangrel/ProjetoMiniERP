@@ -65,11 +65,16 @@
                 <label for="cliente">Cliente</label>
                 <input type="text" class="form-control" id="cliente">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
+                <label for="cupom">Cupom</label>
+                <input type="text" id="cupom" class="form-control">
+                <button id="validarCupom" class="btn btn-secondary mt-2">Aplicar Cupom</button>
+            </div>
+            <div class="col-md-2">
                 <label for="frete">Frete (R$)</label>
                 <input type="number" id="frete" class="form-control" value="0" step="0.01">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label for="total">Total (R$)</label>
                 <input type="text" class="form-control" id="total" readonly>
             </div>
@@ -82,6 +87,7 @@
 <script>
 let itens = [];
 let variacoesDisponiveis = {}; // id => {variacao, preco, quantidade}
+let descontoCupom = 0;
 
 function atualizarTabela() {
     const tbody = document.querySelector("#tabelaItens tbody");
@@ -104,7 +110,7 @@ function atualizarTabela() {
     })
 
     const frete = parseFloat(document.querySelector("#frete").value) || 0;
-    document.querySelector("#total").value = (total + frete).toFixed(2);
+    document.querySelector("#total").value = (total + frete - descontoCupom).toFixed(2);
 }
 
 function removerItem(index) {
@@ -223,6 +229,29 @@ document.querySelector("#finalizarPedido").addEventListener("click", () => {
     })
     .catch(() => alert("Erro ao salvar pedido"))
 })
+
+// Validação de cupom
+
+document.querySelector("#validarCupom").addEventListener("click", () => {
+    const codigo = document.querySelector("#cupom").value.trim();
+    if (!codigo) {
+        alert("Informe o cupom");
+        return;
+    }
+
+    fetch(`/cupons/validar/${codigo}`)
+        .then(resp => resp.json())
+        .then(data => {
+            if (data.valid) {
+                alert(`Cupom válido! Desconto de R$ ${data.desconto}`);
+                descontoCupom = parseFloat(data.desconto);
+            } else {
+                alert("Cupom inválido ou expirado");
+                descontoCupom = 0;
+            }
+            atualizarTabela();
+        });
+});
 
 // Atualiza o endereço com o CEP
 

@@ -50,6 +50,14 @@ class PedidoController
         ]);
 
         if ($pedidoId) {
+            // --- Envio de email ---
+            $to = "cliente@teste.com"; // substitua pelo email do cliente se houver campo
+            $subject = "Confirmação do Pedido #$pedidoId";
+            $message = "Seu pedido #$pedidoId foi realizado com sucesso. Total: R$ {$dados['total']}";
+            $headers = "From: no-reply@seudominio.com\r\n";
+
+            mail($to, $subject, $message, $headers);
+
             echo "Pedido #$pedidoId salvo com sucesso.";
         } else {
             http_response_code(500);

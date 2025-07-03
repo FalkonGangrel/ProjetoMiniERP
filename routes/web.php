@@ -28,6 +28,9 @@ return [
     // Cupons (opcional)
     '/cupons/validar/{codigo}' => 'CupomController@validar',
 
+    //Webhook
+    '/webhook/pedido' => 'WebhookController@receberPedido',
+
     // Relatórios
     '/relatorios' => 'RelatorioController@exibir',
 ];
