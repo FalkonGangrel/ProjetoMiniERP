@@ -45,7 +45,7 @@ function enviarEmailPedido($para, $nomeCliente, $pedido)
         return true;
 
     } catch (Exception $e) {
-        error_log("Erro ao enviar e-mail: {$mail->ErrorInfo}");
+        logErro("Erro ao enviar e-mail: {$mail->ErrorInfo}");
         return false;
     }
 }

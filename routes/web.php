@@ -33,5 +33,7 @@ return [
     '/webhook' => 'WebhookController@atualizarStatus',
 
     // Relatórios
-    '/relatorios' => 'RelatorioController@exibir',
+    '/relatorios' => 'RelatorioController@index',
+    '/relatorios/filtrar' => 'RelatorioController@filtrar',
+    '/relatorios/exportar' => 'RelatorioController@exportarCSV',
 ];
