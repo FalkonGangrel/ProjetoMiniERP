@@ -1,8 +1,10 @@
-<?php /** @var array $produtos */
+<?php
+
+/** @var array $produtos */
 
 use function App\Helpers\e;
 
- ?>
+?>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2><?= $title ?? 'Produtos' ?></h2>

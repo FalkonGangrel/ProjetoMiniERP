@@ -1,4 +1,10 @@
-<?php /** @var array $usuario */ ?>
+<?php
+
+/** @var array $usuario */
+
+use function App\Helpers\e;
+
+?>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2><?= $title ?? 'Usuários' ?></h2>

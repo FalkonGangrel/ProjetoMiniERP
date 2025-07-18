@@ -1,4 +1,11 @@
-<?php /** @var array $estoques */ /** @var array $produtos */ ?>
+<?php
+
+/** @var array $estoques */
+/** @var array $produtos */
+
+use function App\Helpers\e;
+
+?>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>Gerenciar Estoque</h2>

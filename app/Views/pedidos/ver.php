@@ -1,4 +1,10 @@
-<?php /** @var array $pedido */ ?>
+<?php
+
+/** @var array $pedido */
+
+use function App\Helpers\e;
+
+?>
 
 <h2>Pedido #<?= $pedido['id'] ?></h2>
 <p><strong>Cliente:</strong> <?= e($pedido['cliente_nome']) ?></p>

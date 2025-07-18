@@ -3,6 +3,9 @@
 /** @var array $produto */
 /** @var array $estoque */
 
+use function App\Helpers\e;
+
+
 $editando = !empty($produto['id']);
 $action = $editando ? '/produtos/atualizar?id=' . $produto['id'] : '/produtos/salvar';
 $titulo = $editando ? 'Editar Produto' : 'Novo Produto';
