@@ -19,9 +19,9 @@
         <?php if (!empty($estoques)): ?>
             <?php foreach ($estoques as $estoque): ?>
                 <tr data-id="<?= $estoque['id'] ?>">
-                    <td><?= htmlspecialchars($estoque['produto']) ?></td>
-                    <td><span class="view-mode"><?= htmlspecialchars($estoque['variacao']) ?></span><input type="text" class="form-control edit-mode d-none" name="variacao" value="<?= htmlspecialchars($estoque['variacao']) ?>"></td>
-                    <td><span class="view-mode"><?= htmlspecialchars($estoque['quantidade']) ?></span><input type="number" class="form-control edit-mode d-none" name="quantidade" value="<?= (int)$estoque['quantidade'] ?>"></td>
+                    <td><?= e($estoque['produto']) ?></td>
+                    <td><span class="view-mode"><?= e($estoque['variacao']) ?></span><input type="text" class="form-control edit-mode d-none" name="variacao" value="<?= e($estoque['variacao']) ?>"></td>
+                    <td><span class="view-mode"><?= e($estoque['quantidade']) ?></span><input type="number" class="form-control edit-mode d-none" name="quantidade" value="<?= (int)$estoque['quantidade'] ?>"></td>
                     <td><span class="view-mode"><?= number_format($estoque['preco'], 2, ',', '.') ?></span><input type="number" class="form-control edit-mode d-none" name="preco" value="<?= (float)$estoque['preco'] ?>" step="0.01"></td>
                     <td>
                         <button class="btn btn-warning btn-sm btn-editar">Editar</button>
@@ -98,7 +98,7 @@
                     <select class="form-control select-produto" name="produto_id">
                         <option value="">Selecione um produto</option>
                         <?php foreach ($produtos as $produto): ?>
-                            <option value="<?= $produto['id'] ?>"><?= htmlspecialchars($produto['nome']) ?></option>
+                            <option value="<?= $produto['id'] ?>"><?= e($produto['nome']) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </td>

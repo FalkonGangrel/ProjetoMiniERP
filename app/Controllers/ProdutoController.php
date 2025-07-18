@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Produto;
 use App\Models\Estoque;
 use function App\Helpers\view;
+use function App\Helpers\redirect;
 
 class ProdutoController
 {
@@ -70,7 +71,7 @@ class ProdutoController
         $produtoModel->atualizar($id, $_POST);
         $estoqueModel->atualizar($id, $dadosEstoque);
 
-        header('Location: /produtos');
+        redirect('Location: /produtos');
         exit;
     }
 
@@ -105,7 +106,7 @@ class ProdutoController
 
         if ($idProduto && !empty($variacoes)) {
             $estoqueModel->salvar($idProduto, $variacoes);
-            header('Location: /produtos');
+            redirect('Location: /produtos');
             exit;
         }
 
@@ -124,7 +125,7 @@ class ProdutoController
         $produtoModel = new Produto();
         $produtoModel->deletar($id);
 
-        header('Location: /produtos');
+        redirect('Location: /produtos');
         exit;
     }
 
@@ -140,7 +141,7 @@ class ProdutoController
         $produtoModel = new Produto();
         $produtoModel->reativar($id);
 
-        header('Location: /produtos');
+        redirect('Location: /produtos');
         exit;
     }
 

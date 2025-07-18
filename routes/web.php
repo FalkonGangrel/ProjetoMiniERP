@@ -3,9 +3,20 @@
 return [
     '/' => 'HomeController@index',
 
+    //Login
+    '/login' => 'AuthController@loginForm',
+    '/logout' => 'AuthController@logout',
+    '/login' => ['POST' => 'AuthController@login'],
+
+    //Usuários
+    //'/usuarios' => ['UsuarioController@listar', 'admin'],
+    '/usuarios' => 'UsuarioController@listar',
+    '/usuarios/novo' => 'UsuarioController@cadastro',
+    '/usuarios/salvar' => 'UsuarioController@salvar',
+
     // Produtos
     '/produtos' => 'ProdutoController@listar',
-    '/produtos/novo' => 'ProdutoController@cadastro',
+    '/produtos/novo' => ['ProdutoController@cadastro', 'admin|colaborador'],
     '/produtos/salvar' => 'ProdutoController@salvar',
     '/produtos/editar/{id}' => 'ProdutoController@editar',
     '/produtos/atualizar' => 'ProdutoController@atualizar',
@@ -20,7 +31,7 @@ return [
     '/api/estoques/por-produto/{id}' => 'Api\EstoqueApiController@porProduto',
 
     // Pedidos
-    '/pedidos' => 'PedidoController@listar',
+    '/pedidos' => ['PedidoController@listar', 'admin|colaborador|cliente'],
     '/pedidos/novo' => 'PedidoController@criar',
     '/pedidos/salvar' => 'PedidoController@salvar',
     '/pedidos/ver/{id}' => 'PedidoController@ver',

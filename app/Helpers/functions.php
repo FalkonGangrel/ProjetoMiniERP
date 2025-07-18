@@ -37,6 +37,9 @@ function db(): clDB
 
 function view(string $template, array $data = []): void
 {
+    // Garante que as funções auxiliares (como e()) estão disponíveis
+    require_once __DIR__ . '/functions.php';
+
     $templatePath = __DIR__ . '/../views/' . str_replace('.', '/', $template) . '.php';
 
     if (!file_exists($templatePath)) {
@@ -52,11 +55,22 @@ function view(string $template, array $data = []): void
     $content = ob_get_clean();
 
     // Usa o layout base
-    require __DIR__ . '/../views/templates/base.php';
+    require __DIR__ . '/../Views/templates/base.php';
 }
 
 function logErro($mensagem) {
     $logFile = __DIR__ . '/../../storage/logs/errors.log';;
     file_put_contents($logFile, "[" . date('Y-m-d H:i:s') . "] $mensagem" . PHP_EOL, FILE_APPEND);
+}
+
+function redirect($url)
+{
+    header("Location: $url");
+    exit;
+}
+
+function e($string)
+{
+    return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
 }
 ?>

@@ -22,6 +22,25 @@ class Router
 
             if (preg_match($pattern, $uri, $matches)) {
                 array_shift($matches);
+
+                // Verifica se a rota exige permissão
+                $permissoes = null;
+
+                if (is_array($action)) {
+                    [$action, $permissoes] = $action;
+                }
+
+                // Autenticação e autorização
+                if ($permissoes) {
+                    require_once __DIR__ . '/../Helpers/auth.php';
+
+                    if (!usuarioLogado() || !temPermissao(explode('|', $permissoes))) {
+                        http_response_code(403);
+                        echo "Acesso negado.";
+                        return;
+                    }
+                }
+
                 if (is_callable($action)) {
                     call_user_func_array($action, $matches);
                 } elseif (is_string($action)) {

@@ -13,17 +13,17 @@ $titulo = $editando ? 'Editar Produto' : 'Novo Produto';
 <form method="post" action="<?= $action ?>">
     <div class="mb-3">
         <label for="nome" class="form-label">Nome</label>
-        <input type="text" class="form-control" name="nome" id="nome" value="<?= htmlspecialchars($produto['nome'] ?? '') ?>" required>
+        <input type="text" class="form-control" name="nome" id="nome" value="<?= e($produto['nome'] ?? '') ?>" required>
     </div>
 
     <div class="mb-3">
         <label for="descricao" class="form-label">Descrição</label>
-        <textarea class="form-control" name="descricao" id="descricao"><?= htmlspecialchars($produto['descricao'] ?? '') ?></textarea>
+        <textarea class="form-control" name="descricao" id="descricao"><?= e($produto['descricao'] ?? '') ?></textarea>
     </div>
 
     <div class="mb-3">
         <label for="categoria" class="form-label">Categoria</label>
-        <input type="text" class="form-control" name="categoria" id="categoria" value="<?= htmlspecialchars($produto['categoria'] ?? '') ?>">
+        <input type="text" class="form-control" name="categoria" id="categoria" value="<?= e($produto['categoria'] ?? '') ?>">
     </div>
 
     <div class="mb-3">
@@ -47,7 +47,7 @@ $titulo = $editando ? 'Editar Produto' : 'Novo Produto';
                 <?php foreach ($estoque as $index => $item): ?>
                     <div class="row mb-2 variacao-item">
                         <div class="col-md-5">
-                            <input type="text" class="form-control" name="variacao[]" placeholder="Nome da variação" value="<?= htmlspecialchars($item['variacao']) ?>" required>
+                            <input type="text" class="form-control" name="variacao[]" placeholder="Nome da variação" value="<?= e($item['variacao']) ?>" required>
                         </div>
                         <div class="col-md-3">
                             <input type="number" step="0.01" class="form-control" name="preco[]" placeholder="Preço" min="0" value="<?= (float)$item['preco'] ?>" required>

@@ -1,7 +1,7 @@
 <?php /** @var array $pedido */ ?>
 
 <h2>Pedido #<?= $pedido['id'] ?></h2>
-<p><strong>Cliente:</strong> <?= htmlspecialchars($pedido['cliente_nome']) ?></p>
+<p><strong>Cliente:</strong> <?= e($pedido['cliente_nome']) ?></p>
 <p><strong>Data:</strong> <?= $pedido['data'] ?></p>
 <p><strong>Status:</strong> <?= $pedido['status'] ?></p>
 
@@ -20,8 +20,8 @@
     <tbody>
         <?php foreach ($pedido['itens'] as $item): ?>
             <tr>
-                <td><?= htmlspecialchars($item['produto_nome']) ?></td>
-                <td><?= htmlspecialchars($item['variacao']) ?></td>
+                <td><?= e($item['produto_nome']) ?></td>
+                <td><?= e($item['variacao']) ?></td>
                 <td>R$ <?= number_format($item['preco'], 2, ',', '.') ?></td>
                 <td><?= $item['quantidade'] ?></td>
                 <td>R$ <?= number_format($item['preco_unitario'], 2, ',', '.') ?></td>

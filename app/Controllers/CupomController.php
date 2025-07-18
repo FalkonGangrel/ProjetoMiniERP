@@ -26,6 +26,9 @@ class CupomController
             return;
         }
 
+        var_dump($cupom['validade']);
+        var_dump(date('Y-m-d'));
+        echo date_default_timezone_get();
         if ($cupom['validade'] < date('Y-m-d')) {
             http_response_code(400);
             echo json_encode(['success' => false, 'message' => 'Cupom expirado.']);
