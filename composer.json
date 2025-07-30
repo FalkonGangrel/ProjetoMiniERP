@@ -1,0 +1,19 @@
+{
+    "name": "anderson/projeto-mini-erp",
+    "description": "Projeto Mini ERP",
+    "authors": [
+        {
+            "name": "Anderson Dias Takeno",
+            "email": "anderson.cdias79@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "phpmailer/phpmailer": "^6.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
