@@ -16,7 +16,8 @@ return [
 
     // Produtos
     '/produtos' => 'ProdutoController@listar',
-    '/produtos/novo' => ['ProdutoController@cadastro', 'admin|colaborador'],
+    //'/produtos/novo' => ['ProdutoController@cadastro', 'admin|colaborador'],
+    '/produtos/novo' => 'ProdutoController@cadastro',
     '/produtos/salvar' => 'ProdutoController@salvar',
     '/produtos/editar/{id}' => 'ProdutoController@editar',
     '/produtos/atualizar' => 'ProdutoController@atualizar',
@@ -31,7 +32,8 @@ return [
     '/api/estoques/por-produto/{id}' => 'Api\EstoqueApiController@porProduto',
 
     // Pedidos
-    '/pedidos' => ['PedidoController@listar', 'admin|colaborador|cliente'],
+    //'/pedidos' => ['PedidoController@listar', 'admin|colaborador|cliente'],
+    '/pedidos' => 'PedidoController@listar',
     '/pedidos/novo' => 'PedidoController@criar',
     '/pedidos/salvar' => 'PedidoController@salvar',
     '/pedidos/ver/{id}' => 'PedidoController@ver',
