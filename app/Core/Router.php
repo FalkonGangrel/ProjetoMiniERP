@@ -32,9 +32,8 @@ class Router
 
                 // Autenticação e autorização
                 if ($permissoes) {
-                    require_once __DIR__ . '/../Helpers/auth.php';
 
-                    if (!usuarioLogado() || !temPermissao(explode('|', $permissoes))) {
+                    if (!\App\Helpers\usuarioLogado() || !\App\Helpers\temPermissao(explode('|', $permissoes))) {
                         http_response_code(403);
                         echo "Acesso negado.";
                         return;
