@@ -17,7 +17,7 @@
             <div class="collapse navbar-collapse" id="menuERP">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="/produtos">Produtos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/estoque">Estoque</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/estoques">Estoque</a></li>
                     <li class="nav-item"><a class="nav-link" href="/pedidos">Pedidos</a></li>
                     <li class="nav-item"><a class="nav-link" href="/cupons">Cupons</a></li>
                 </ul>
